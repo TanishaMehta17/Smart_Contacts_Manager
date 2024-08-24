@@ -1,7 +1,8 @@
-package com.Smart_contact_manager.controllers;
+package com.Smart_contact_manager;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 
 @SpringBootApplication
 public class Application {
