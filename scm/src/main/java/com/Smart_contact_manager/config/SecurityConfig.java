@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -46,6 +47,9 @@ public class SecurityConfig {
 
     @Autowired
     private OAuthAuthenticationSuccessHandler handler;
+    
+    @Autowired
+    private AuthFailtureHandler authFailtureHandler;
     @Bean
     public DaoAuthenticationProvider authenticationProvider()
     {
@@ -55,41 +59,41 @@ public class SecurityConfig {
         return daoAuthenticationProvider;
     }
     
-    //form login method explaination :-
-    //Form-Based Authentication: This method enables form-based login for your application. It provides a default login form where users can enter their credentials (username and password) to authenticate themselves.
-     //Customization: The Customizer.withDefaults() part means that the default configuration for the login form is used. This default configuration typically includes settings such as the default login page URL (/login) and handling of login failures.
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception
-    {
-        //configuration
-        httpSecurity.authorizeHttpRequests(authorize->{
-       //  authorize.requestMatchers("/home","/register","/service").permitAll();
-       authorize.requestMatchers("/user/**").authenticated();
-       authorize.anyRequest().permitAll();
+    @Bean
+       public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+
+        httpSecurity.authorizeHttpRequests(authorize -> {
+
+            authorize.requestMatchers("/user/**").authenticated();
+            authorize.anyRequest().permitAll();
         });
 
-       // httpSecurity.formLogin(Customizer.withDefaults());
-        httpSecurity.formLogin(formLogin ->{
-        formLogin.loginPage("/login")
-        .loginProcessingUrl("/authenticate")
-        .successForwardUrl("/user/profile")
-        .usernameParameter("email")
-        .passwordParameter("password");
-        
-       });
-       httpSecurity.csrf(csrf -> csrf.disable());
-        httpSecurity.logout(logoutForm->{
-          logoutForm.logoutUrl("/do-logout");
-          logoutForm.logoutSuccessUrl("/login?logout=true");
+        httpSecurity.formLogin(formLogin -> {
+            formLogin.loginPage("/login");
+            formLogin.loginProcessingUrl("/authenticate");
+            formLogin.successForwardUrl("/user/profile");
+            formLogin.usernameParameter("email");
+            formLogin.passwordParameter("password");
+
+            formLogin.failureHandler(authFailtureHandler);
+
         });
 
-        //oauth configuration
-        httpSecurity.oauth2Login(oauth->{
+        httpSecurity.csrf(AbstractHttpConfigurer::disable);
+        // oauth configurations
+
+        httpSecurity.oauth2Login(oauth -> {
             oauth.loginPage("/login");
             oauth.successHandler(handler);
         });
 
+        httpSecurity.logout(logoutForm -> {
+            logoutForm.logoutUrl("/do-logout");
+            logoutForm.logoutSuccessUrl("/login?logout=true");
+        });
 
         return httpSecurity.build();
+
     }
 
     @Bean
