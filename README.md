@@ -30,6 +30,17 @@
 - **HTML:** Markup language for structuring the content.
 - **JPA:** Java Persistence API for managing database interactions.
 - **Cloudinary:** Cloud storage service for managing and storing contact pictures.
+  ## Installation
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/TanishaMehta17/Smart_Contacts_Manager/
+
+
+2. **Navigate to the project directory:**
+   ```bash
+   inside Java Projects
+   run the scm directory 
 
 ## Configuration
 
