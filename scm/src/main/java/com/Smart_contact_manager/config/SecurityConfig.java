@@ -1,5 +1,7 @@
 package com.Smart_contact_manager.config;
 
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,68 +15,107 @@ import org.springframework.security.web.SecurityFilterChain;
 import com.Smart_contact_manager.services.impl.SecurityCustomUserDetailService;
 
 
-
-//if you dont use password encoder bean then you wont be able to login as spring security needs a password encoder to proceed make sure to add that bean as well
-//By defining this bean, you’re telling Spring Security to use NoOpPasswordEncoder as the default password encoding strategy. If you don’t provide a PasswordEncoder bean, Spring Security will expect that passwords are encoded and may throw an exception if it cannot find a suitable encoder.
 @Configuration
- 
 public class SecurityConfig {
+
+    // user create and login using java code with in memory service
 
     // @Bean
     // public UserDetailsService userDetailsService() {
-    //     // Creating a UserDetails object with username, password, and roles
-    //     UserDetails user1 = User
-    //         .withDefaultPasswordEncoder()
-    //         .username("admin123")
-    //         .password("admin123")
-    //         .roles("ADMIN","USER")
-    //         .build();
 
-    //         UserDetails user2 = User
-    //         .withDefaultPasswordEncoder()
-    //         .username("user123")
-    //         .password("user123")
-    //         .build();
+    // UserDetails user1 = User
+    // .withDefaultPasswordEncoder()
+    // .username("admin123")
+    // .password("admin123")
+    // .roles("ADMIN", "USER")
+    // .build();
 
-    //     // Creating an InMemoryUserDetailsManager with the UserDetails
-    //     var inMemoryUserDetailsManager = new InMemoryUserDetailsManager(user1,user2);
-    //     return inMemoryUserDetailsManager;
+    // UserDetails user2 = User
+    // .withDefaultPasswordEncoder()
+    // .username("user123")
+    // .password("password")
+    // // .roles(null)
+    // .build();
+
+    // var inMemoryUserDetailsManager = new InMemoryUserDetailsManager(user1,
+    // user2);
+    // return inMemoryUserDetailsManager;
+
     // }
 
-    
     @Autowired
     private SecurityCustomUserDetailService userDetailService;
 
     @Autowired
-    private OAuthAuthenticationSuccessHandler handler;
-    
+    private OAuthAuthenicationSuccessHandler handler;
+
     @Autowired
     private AuthFailtureHandler authFailtureHandler;
+
+    // configuraiton of authentication providerfor spring security
     @Bean
-    public DaoAuthenticationProvider authenticationProvider()
-    {
-        DaoAuthenticationProvider daoAuthenticationProvider= new DaoAuthenticationProvider();
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        // user detail service ka object:
         daoAuthenticationProvider.setUserDetailsService(userDetailService);
+        // password encoder ka object
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+
         return daoAuthenticationProvider;
     }
-    
+
     @Bean
-       public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
+        // configuration
+
+        // urls configure kiay hai ki koun se public rangenge aur koun se private
+        // rangenge
         httpSecurity.authorizeHttpRequests(authorize -> {
-
+            // authorize.requestMatchers("/home", "/register", "/services").permitAll();
             authorize.requestMatchers("/user/**").authenticated();
             authorize.anyRequest().permitAll();
         });
 
+        // form default login
+        // agar hame kuch bhi change karna hua to hama yaha ayenge: form login se
+        // related
         httpSecurity.formLogin(formLogin -> {
+
+            //
             formLogin.loginPage("/login");
             formLogin.loginProcessingUrl("/authenticate");
             formLogin.successForwardUrl("/user/profile");
+            // formLogin.failureForwardUrl("/login?error=true");
+            // formLogin.defaultSuccessUrl("/home");
             formLogin.usernameParameter("email");
             formLogin.passwordParameter("password");
 
+            // formLogin.failureHandler(new AuthenticationFailureHandler() {
+
+            // @Override
+            // public void onAuthenticationFailure(HttpServletRequest request,
+            // HttpServletResponse response,
+            // AuthenticationException exception) throws IOException, ServletException {
+            // // TODO Auto-generated method stub
+            // throw new UnsupportedOperationException("Unimplemented method
+            // 'onAuthenticationFailure'");
+            // }
+
+            // });
+
+            // formLogin.successHandler(new AuthenticationSuccessHandler() {
+
+            // @Override
+            // public void onAuthenticationSuccess(HttpServletRequest request,
+            // HttpServletResponse response,
+            // Authentication authentication) throws IOException, ServletException {
+            // // TODO Auto-generated method stub
+            // throw new UnsupportedOperationException("Unimplemented method
+            // 'onAuthenticationSuccess'");
+            // }
+
+            // });
             formLogin.failureHandler(authFailtureHandler);
 
         });
@@ -97,8 +138,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder()
-    {
-       return new BCryptPasswordEncoder(); 
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

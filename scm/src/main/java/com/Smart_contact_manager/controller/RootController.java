@@ -1,33 +1,39 @@
 package com.Smart_contact_manager.controller;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import com.Smart_contact_manager.entities.User;
 import com.Smart_contact_manager.helper.Helper;
 import com.Smart_contact_manager.services.UserService;
 
-//method in this controller will be executed for allt he request
+@ControllerAdvice
 public class RootController {
 
-     @Autowired
+    private Logger logger = org.slf4j.LoggerFactory.getLogger(this.getClass());
+
+    @Autowired
     private UserService userService;
-    private Logger logger = LoggerFactory.getLogger(UserController.class);
-    
-     //model arrtribute annotation will allow u to access this function to all the api or url i.e dahsboard and prfile
-    //it will run before controller for this whole page
+
     @ModelAttribute
-    public void addLoggedInUserInformation(Authentication authentication, Model model) {
-        if(authentication==null)
-        return;
+    public void addLoggedInUserInformation(Model model, Authentication authentication) {
+        if (authentication == null) {
+            return;
+        }
+        System.out.println("Adding logged in user information to the model");
+        ;
         String username = Helper.getEmailOfLoggedInUser(authentication);
-        logger.info("User logged in :{}", username);
+        logger.info("User logged in: {}", username);
+        // database se data ko fetch : get user from db :
         User user = userService.getUserByEmail(username);
+        System.out.println(user);
+        System.out.println(user.getName());
+        System.out.println(user.getEmail());
         model.addAttribute("loggedInUser", user);
-       
+
     }
 }

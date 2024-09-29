@@ -30,7 +30,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 @Controller
-@RequestMapping("/user/contact")
+@RequestMapping("/user/contacts")
 public class ContactController {
 
     private Logger logger = org.slf4j.LoggerFactory.getLogger(ContactController.class);
@@ -46,7 +46,6 @@ public class ContactController {
     @RequestMapping("/add")
     public String addContactVoew(Model model) {
         ContactForm contactForm = new ContactForm();
-        contactForm.setName("Tanisha Mehta");
         contactForm.setFavorite(true);
         model.addAttribute("contactForm", contactForm);
         return "/user/add_contact";
@@ -151,11 +150,21 @@ public class ContactController {
         return "user/search";
     }
 
-    //delete contact
     @RequestMapping("/delete/{contactId}")
-    public String deleteContact(@PathVariable("contactId") String contactId)
-    {
+    public String deleteContact(
+            @PathVariable("contactId") String contactId,
+            HttpSession session) {
         contactService.delete(contactId);
+        logger.info("contactId {} deleted", contactId);
+
+        session.setAttribute("message",
+                Message.builder()
+                        .content("Contact is Deleted successfully !! ")
+                        .type(MessageType.green)
+                        .build()
+
+        );
+
         return "redirect:/user/contacts";
     }
 
@@ -182,7 +191,7 @@ public class ContactController {
     }
 
     @RequestMapping(value = "/update/{contactId}", method=RequestMethod.POST)
-    public String updateContact(@PathVariable("contactId") String contactId, @ModelAttribute ContactForm contactForm, Model model, BindingResult bindingResult)
+    public String updateContact(@PathVariable("contactId") String contactId, @ModelAttribute ContactForm contactForm,  BindingResult bindingResult,Model model)
     {
         if(bindingResult.hasErrors())
         {

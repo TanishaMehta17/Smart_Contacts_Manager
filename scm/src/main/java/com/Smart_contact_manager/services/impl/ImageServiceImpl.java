@@ -2,7 +2,7 @@ package com.Smart_contact_manager.services.impl;
 
 import java.io.IOException;
 
-import java.util.*;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.Smart_contact_manager.helper.AppConstants;
@@ -11,6 +11,7 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.Transformation;
 import com.cloudinary.utils.ObjectUtils;
 
+@Service
 public class ImageServiceImpl implements imageService {
 
     private Cloudinary cloudinary;

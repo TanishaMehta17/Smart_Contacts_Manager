@@ -2,7 +2,9 @@ package com.Smart_contact_manager.forms;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import jakarta.validation.Valid;
+import com.Smart_contact_manager.validators.ValidFile;
+
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -42,9 +44,11 @@ public class ContactForm {
 
     private String linkedInLink;
 
-    
+    // annotation create karenge jo file validate
+    // size
+    // resolution
 
-   // @ValidFile(message = "Invalid File")
+    @ValidFile(message = "Invalid File")
     private MultipartFile contactImage;
 
     private String picture;

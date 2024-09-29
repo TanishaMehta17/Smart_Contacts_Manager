@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 
 import com.Smart_contact_manager.entities.Contact;
 import com.Smart_contact_manager.entities.User;
@@ -14,6 +15,7 @@ import com.Smart_contact_manager.helper.ResourceNotFoundException;
 import com.Smart_contact_manager.repository.ContactRepo;
 import com.Smart_contact_manager.services.ContactService;
 
+@Service
 public class ContactServiceImpl implements ContactService {
 
   @Autowired

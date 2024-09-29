@@ -1,16 +1,23 @@
 package com.Smart_contact_manager.helper;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.stereotype.Component;
 
+@Component
 public class Helper {
+
+    @Value("${server.baseUrl}")
+    private String baseUrl;
 
     public static String getEmailOfLoggedInUser(Authentication authentication) {
 
-        // sign in with google
-        // sign in with github
+        // agar email is password se login kiya hai to : email kaise nikalenge
         if (authentication instanceof OAuth2AuthenticationToken) {
+
             var aOAuth2AuthenticationToken = (OAuth2AuthenticationToken) authentication;
             var clientId = aOAuth2AuthenticationToken.getAuthorizedClientRegistrationId();
 
@@ -30,20 +37,20 @@ public class Helper {
                 username = oauth2User.getAttribute("email") != null ? oauth2User.getAttribute("email").toString()
                         : oauth2User.getAttribute("login").toString() + "@gmail.com";
             }
+
+            // sign with facebook
             return username;
-        }
-        // agar email ns password se login kiya h toh email kaise nikalenge
-        else {
-                    return authentication.getName();
+
+        } else {
+            System.out.println("Getting data from local database");
+            return authentication.getName();
         }
 
-
-        
     }
-    public static String getLinkForEmailVerification(String emailToken)
-        {
-              String link= "http://localhost:8000/auth/verify-email?token" + emailToken;
-              return link;
-        }
 
+    public String getLinkForEmailVerificatiton(String emailToken) {
+
+        return this.baseUrl + "/auth/verify-email?token=" + emailToken;
+
+    }
 }
