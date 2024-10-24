@@ -1,24 +1,164 @@
 <!DOCTYPE html>
-<html
-  lang="en"
-  th:replace="~{base :: parent(~{::#content},~{::title},~{::script})}"
->
-  <head>
-    <title>About Page</title>
-  </head>
-  <body>
-    <div id="content">
-      <h1>Welcome to about page</h1>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur,
-        ratione!
-      </p>
-    </div>
-    <script>
-      console.log("about page");
-    </script>
-    <script>
-      console.log("second about page script");
-    </script>
-  </body>
+<html lang="en" th:replace="~{base :: parent(~{::#content},~{::title},~{::script})}">
+<head>
+    <title>About Us - Smart Contact Manager</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f9fafb; /* Light background for better contrast */
+        }
+
+        h1, h2 {
+            margin-bottom: 20px; /* Space below headings */
+        }
+
+        p {
+            margin: 0 0 20px; /* Space below paragraphs */
+            color: #4a5568; /* Dark gray text for better readability */
+        }
+
+        ul {
+            margin: 0 auto; /* Center the list */
+            padding-left: 20px; /* Space on the left */
+            max-width: 600px; /* Limit width for better readability */
+            list-style-type: disc; /* Add bullet points */
+        }
+
+        .container {
+            max-width: 1200px; /* Max width for container */
+            margin: 0 auto; /* Center align the container */
+            padding: 0 20px; /* Horizontal padding */
+        }
+
+        .bg-blue-600 {
+            background-color: #2b6cb0; /* Customize blue color */
+        }
+
+        .bg-white {
+            background-color: #ffffff; /* White background */
+        }
+
+        .bg-gray-100 {
+            background-color: #f7fafc; /* Light gray background */
+        }
+
+        .bg-gray-800 {
+            background-color: #2d3748; /* Dark gray for footer */
+        }
+
+        .text-blue-400 {
+            color: #63b3ed; /* Light blue for links */
+        }
+
+        .text-lg {
+            font-size: 1.125rem; /* Larger text for better visibility */
+        }
+
+        .text-3xl {
+            font-size: 1.875rem; /* Increased size for headings */
+        }
+
+        .text-4xl {
+            font-size: 2.25rem; /* Increased size for the main title */
+        }
+
+        /* Hover effect for footer links */
+        .text-blue-400:hover {
+            text-decoration: underline; /* Underline on hover */
+        }
+
+        /* Animations for sections */
+        .animate__animated {
+            opacity: 0;
+            animation-duration: 0.5s;
+            animation-fill-mode: forwards; /* Ensure it stays visible */
+        }
+        .animate__fadeInUp {
+            animation-name: fadeInUp; /* Fading effect */
+        }
+        @keyframes fadeInUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Additional spacing between sections */
+        .section {
+            padding: 40px 0; /* Vertical padding for spacing */
+        }
+
+        /* Specific styles for internal spacing */
+        .section h2 {
+            margin-bottom: 15px; /* Space below section headings */
+        }
+
+        .section p {
+            margin-bottom: 15px; /* Space below paragraphs */
+        }
+
+        .section ul {
+            margin-top: 10px; /* Space above the list */
+        }
+    </style>
+</head>
+<body>
+<div id="content" class="border">
+    <!-- Header Section -->
+    <header class="bg-blue-600 text-white py-20 animate__animated animate__fadeInDown">
+        <div class="container mx-auto text-center">
+            <h1 class="text-4xl font-bold mb-4">About Smart Contact Manager</h1>
+            <p class="text-lg mb-8">Your ultimate solution for efficient and secure contact management.</p>
+        </div>
+    </header>
+
+    <!-- Our Story Section -->
+    <section class="section bg-white">
+        <div class="container mx-auto text-center">
+            <h2 class="text-3xl font-bold mb-12 animate__animated animate__fadeInUp">Our Story</h2>
+            <p class="text-gray-600">Smart Contact Manager was founded with a simple mission: to make managing contacts effortless and secure. Over the years, we've grown into a trusted platform for users around the globe.</p>
+            <p class="text-gray-600">Our journey began with a desire to address the common pain points in contact management, leading to innovative features and a user-friendly interface that keeps evolving with our users' needs.</p>
+        </div>
+    </section>
+
+    <!-- Our Mission Section -->
+    <section class="section bg-gray-100">
+        <div class="container mx-auto text-center">
+            <h2 class="text-3xl font-bold mb-12 animate__animated animate__fadeInUp">Our Mission</h2>
+            <p class="text-gray-600">To simplify contact management through innovative solutions that empower users to organize their personal and professional connections effectively.</p>
+        </div>
+    </section>
+
+    <!-- Our Values Section -->
+    <section class="section bg-white">
+        <div class="container mx-auto text-center">
+            <h2 class="text-3xl font-bold mb-12 animate__animated animate__fadeInUp">Our Values</h2>
+            <ul>
+                <li>Integrity: We uphold the highest standards of honesty and accountability.</li>
+                <li>Innovation: We embrace creativity and strive for excellence in all we do.</li>
+                <li>Customer Focus: We prioritize our users’ needs and feedback to improve our services.</li>
+                <li>Teamwork: We collaborate as a unified team to achieve our goals.</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto text-center">
+            <p>&copy; 2024 Smart Contact Manager. All rights reserved.</p>
+            <p>Follow us on <a href="#" class="text-blue-400">Facebook</a>, <a href="#" class="text-blue-400">Twitter</a>, and <a href="#" class="text-blue-400">Instagram</a>.</p>
+        </div>
+    </footer>
+</div>
+<script>
+    console.log("About Us page");
+</script>
+</body>
 </html>
